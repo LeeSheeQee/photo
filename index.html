@@ -40,15 +40,27 @@
         }
         #show>div>div>img{
             width: 100%;
-
+            cursor: pointer;
         }
         .c{
             clear: left;
+        }
+        #modal{text-align: center;background: rgba(255,255,255,0.9);position: fixed;top:0;left: 0;z-index: 999;display: none;cursor: pointer}
+        #modal>img{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
         }
     </style>
 </head>
 <body>
     <div id="show"></div>
+    <div id="modal"></div>
 <script>
     var arr = [
         {
@@ -208,8 +220,14 @@
     var len = arr.length;
     var show = document.getElementById('show');
     var userWindowWidth = document.body.clientWidth;
-    console.log('document.body.clientWidth用JS输出的结果：'+userWindowWidth);
+    var userWindowHeight = window.innerHeight;
     var imgBeginHeight = 0;
+    var modal = document.getElementById('modal');
+    modal.style.width = userWindowWidth + 'px';
+    modal.style.height = userWindowHeight + 'px';
+
+
+
     if(userWindowWidth > 1200){
         imgBeginHeight = 250;
     }else {
@@ -268,16 +286,25 @@
             divLong = 0;
          }
     }
-
-
-
-
-function check() {
-    if(img.width>0||img.height>0){
-        console.log('width:'+img.width+' height:'+img.height);
-        clearInterval(timer);
+    var allImgs = document.querySelectorAll('#show>div>div>img');
+    console.log(allImgs);
+    for (var n = 0; n < allImgs.length; n++){
+        allImgs[n].onclick = function () {
+            var imgSrc = this.getAttribute('src');
+            var bImg = new Image();
+            bImg.src = imgSrc;
+            bImg.style.maxHeight = userWindowHeight + 'px';
+            bImg.style.maxWidth = userWindowWidth + 'px';
+            modal.innerHTML = '';
+            modal.style.display = 'block';
+            modal.appendChild(bImg);
+        }
     }
-}
+    modal.onclick=function () {
+        this.style.display = 'none';
+    }
+
+
 </script>
 </body>
 </html>
