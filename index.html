@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            box-sizing: border-box;
+
+        }
+        html{
+
+        }
+        body{
+            overflow:scroll;
+            margin:0;
+            padding:0;
+        }
+        div,img{
+            margin:0;
+            padding:0;
+        }
+        #show{
+        }
+        .outBox{
+
+        }
+        img{
+            margin:0;
+            padding:0;
+        }
+        #show{
+            width: 100%;
+        }
+
+        #show>div>div{
+            float: left;
+            overflow: hidden;
+            border:2px solid #fff;
+        }
+        #show>div>div>img{
+            width: 100%;
+
+        }
+        .c{
+            clear: left;
+        }
+    </style>
+</head>
+<body>
+    <div id="show"></div>
+<script>
+    var arr = [
+        {
+        url: 'img/1.jpg',
+        width: 1920,
+        height: 1080
+    },
+        {
+            url: 'img/2.jpg',
+            width: 1920,
+            height: 1280
+        },
+        {
+            url: 'img/3.jpg',
+            width: 1600,
+            height: 1200
+        },
+        {
+            url: 'img/4.jpg',
+            width: 1920,
+            height: 1200
+        },
+        {
+            url: 'img/5.jpg',
+            width: 533,
+            height: 800
+        },
+        {
+            url: 'img/6.jpg',
+            width: 1920,
+            height: 1080
+        },
+        {
+            url: 'img/7.jpg',
+            width: 1920,
+            height: 1282
+        },
+        {
+            url: 'img/8.jpg',
+            width: 1920,
+            height:1200
+        },
+        {
+            url: 'img/9.jpg',
+            width: 1920,
+            height: 1273
+        },
+        {
+            url: 'img/10.jpg',
+            width: 658,
+            height: 1253
+        },
+        {
+            url: 'img/11.jpg',
+            width: 467,
+            height: 700
+        },
+        {
+            url: 'img/12.jpg',
+            width: 1260,
+            height: 709
+        },
+        {
+            url: 'img/13.jpg',
+            width: 492,
+            height: 690
+        },
+        {
+            url: 'img/14.jpeg',
+            width: 1125,
+            height: 750
+        },
+        {
+            url: 'img/15.JPG',
+            width: 368,
+            height: 550
+        },
+        {
+            url: 'img/16.jpeg',
+            width: 2250,
+            height: 1500
+        },
+        {
+            url: 'img/17.jpeg',
+            width: 2250,
+            height: 1500
+        },
+        {
+            url: 'img/18.jpg',
+            width: 400,
+            height: 600
+        },
+        {
+            url: 'img/19.jpg',
+            width: 598,
+            height: 600
+        },
+        {
+            url: 'img/20.jpeg',
+            width: 2520,
+            height: 1418
+        },
+        {
+            url: 'img/21.jpg',
+            width: 600,
+            height: 900
+        },
+        {
+            url: 'img/22.jpeg',
+            width: 1125,
+            height: 750
+        },
+        {
+            url: 'img/23.jpg',
+            width: 500,
+            height: 750
+        },
+        {
+            url: 'img/24.jpg',
+            width: 1000,
+            height: 667
+        },
+        {
+            url: 'img/25.jpg',
+            width: 1000,
+            height:664
+        },
+        {
+            url: 'img/26.jpg',
+            width: 1000,
+            height: 667
+        },
+        {
+            url: 'img/27.jpg',
+            width: 1200,
+            height: 511
+        },
+        {
+            url: 'img/28.jpg',
+            width: 650,
+            height: 1170
+        },
+        {
+            url: 'img/27.jpg',
+            width: 1200,
+            height: 511
+        }
+
+    ];
+    var ratio;
+    var finalWidth;
+    var finalHeight;
+    var divLong = 0;
+    var begin = 0;
+
+
+    var len = arr.length;
+    var show = document.getElementById('show');
+    var userWindowWidth = document.body.clientWidth;
+    console.log('document.body.clientWidth用JS输出的结果：'+userWindowWidth);
+    var imgBeginHeight = 0;
+    if(userWindowWidth > 1200){
+        imgBeginHeight = 250;
+    }else {
+        imgBeginHeight = 180;
+    }
+    for(var i = 0; i < len; i++){
+        ratio = arr[i].width/arr[i].height;
+//        console.log('-------------'+ratio);
+        imgBeginWidth = imgBeginHeight*ratio;
+        divLong += imgBeginWidth;
+//        console.log(divLong);
+        arr[i].width = imgBeginWidth;
+        arr[i].height = imgBeginHeight;
+        if(divLong > userWindowWidth){
+            var div = document.createElement('div');
+            div.setAttribute('class','outBox');
+            divLong -= imgBeginWidth;
+            var finalRatio = userWindowWidth/divLong;
+//            console.log('userWindowWidth:'+userWindowWidth +'divLong:'+divLong+'radio:'+ finalRatio);
+            for(var j = begin; j < i ; j++){
+//                console.log('begin:'+ arr[j].width);
+                finalWidth = arr[j].width*finalRatio;
+//               console.log('final:'+finalWidth);
+                finalHeight = arr[j].height*finalRatio;
+                var img = new Image();
+                var div2 = document.createElement('div');
+                img.src = arr[j].url;
+                img.style.width = finalWidth + 'px';
+                img.style.height = finalHeight + 'px';
+                div2.style.width = parseInt(finalWidth) + 'px';
+//                console.log(div2);
+                div2.style.height = parseInt(finalHeight) + 'px';
+                div2.appendChild(img);
+                div.appendChild(div2);
+            }
+            begin = i;
+//            console.log(begin+'.....................');
+            show.appendChild(div);
+            divLong = imgBeginWidth;
+//            console.log(divLong);
+            var cDiv = document.createElement('div');
+            cDiv.setAttribute('class','c');
+            show.appendChild(cDiv);
+        }else if(i===len-1){
+            var div = document.createElement('div');
+             for(var k = begin; k < len ; k++){
+                 var img = new Image();
+                 var div2 = document.createElement('div');
+                 img.src = arr[k].url;
+                 img.style.width = arr[k].width+ 'px';
+                 img.style.height = arr[k].height + 'px';
+                 div2.appendChild(img);
+                 div.appendChild(div2);
+             }
+            show.appendChild(div);
+            divLong = 0;
+         }
+    }
+
+
+
+
+function check() {
+    if(img.width>0||img.height>0){
+        console.log('width:'+img.width+' height:'+img.height);
+        clearInterval(timer);
+    }
+}
+</script>
+</body>
+</html>
